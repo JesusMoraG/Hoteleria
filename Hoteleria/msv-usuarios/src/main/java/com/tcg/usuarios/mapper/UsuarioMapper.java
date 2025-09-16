@@ -16,12 +16,12 @@ public class UsuarioMapper extends CommonMapper<UsuarioRequest, UsuarioResponse,
         Usuario usuario = new Usuario();
         usuario.setUsername(request.username().trim());
         usuario.setPassword(request.password().trim());
-        usuario.setIdRol(request.idRol());
+        usuario.setRol(request.rol());
         return usuario;
     }
 
     @Override
     public UsuarioResponse entityToResponse(Usuario entity) {
-        return new UsuarioResponse(entity.getId(), entity.getUsername(), entity.getIdRol());
+        return new UsuarioResponse(entity.getId(), entity.getUsername(), entity.getRol());
     }
 }

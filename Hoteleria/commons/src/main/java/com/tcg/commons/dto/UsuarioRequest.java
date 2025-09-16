@@ -10,5 +10,5 @@ public record UsuarioRequest(
     String password,
 
     @NotNull(message = "Debe tener un rol asignado")
-    Long idRol
+    String rol
 ) {}

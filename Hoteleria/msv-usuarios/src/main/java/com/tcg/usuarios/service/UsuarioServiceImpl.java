@@ -49,23 +49,19 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new IllegalArgumentException("El username ya existe");
         }
 
-        // validar rol vía Feign
-        rolClient.obtenerPorId(dto.idRol());
-
+        
         Usuario entity = mapper.requestToEntity(dto);
         return mapper.entityToResponse(repository.save(entity));
     }
 
     @Override
     public UsuarioResponse actualizar(Long id, UsuarioRequest dto) {
-        Usuario existing = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
-
-        rolClient.obtenerPorId(dto.idRol());
+    	 Usuario existing = repository.findById(id)
+    	            .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
 
         existing.setUsername(dto.username().trim());
         existing.setPassword(dto.password().trim());
-        existing.setIdRol(dto.idRol());
+        existing.setRol(dto.rol().trim());
 
         return mapper.entityToResponse(repository.save(existing));
     }
