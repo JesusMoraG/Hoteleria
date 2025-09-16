@@ -4,8 +4,10 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -38,6 +40,10 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.tcg.authorization.models.Role;
+import com.tcg.authorization.models.User;
+import com.tcg.authorization.repositories.RoleRepository;
+import com.tcg.authorization.repositories.UserRepository;
 import com.tcg.authorization.services.CustomUserDetailsService;
 
 @Configuration
@@ -170,6 +176,40 @@ public class SecurityConfig {
 				.build();
 
 		return new InMemoryRegisteredClientRepository(oidcClient);
+	}
+	
+	@Bean
+	CommandLineRunner initData(UserRepository userRepo, RoleRepository rolRepo, PasswordEncoder encoder) {
+	    return args -> {
+	        Role adminRole = rolRepo.findByNombre("ROLE_ADMIN")
+	                .orElseGet(() -> {
+	                	Role r = new Role();
+	                    r.setNombre("ROLE_ADMIN");
+	                    return rolRepo.save(r);
+	                });
+	        Role userRole = rolRepo.findByNombre("ROLE_USER")
+	                .orElseGet(() -> {
+	                	Role r = new Role();
+	                    r.setNombre("ROLE_USER");
+	                    return rolRepo.save(r);
+	                });
+
+	        if (userRepo.findByUsername("admin").isEmpty()) {
+	            User admin = new User();
+	            admin.setUsername("admin");
+	            admin.setPassword(encoder.encode("admin"));
+	            admin.setRoles(Set.of(adminRole));
+	            userRepo.save(admin);
+	        }
+	        
+	        if (userRepo.findByUsername("usuario").isEmpty()) {
+	        	User user = new User();
+	            user.setUsername("usuario");
+	            user.setPassword(encoder.encode("usuario"));
+	            user.setRoles(Set.of(userRole));
+	            userRepo.save(user);
+	        }
+	    };
 	}
 
 }

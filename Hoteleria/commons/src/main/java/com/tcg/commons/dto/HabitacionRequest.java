@@ -1,5 +1,7 @@
 package com.tcg.commons.dto;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.*;
 
 public record HabitacionRequest(
@@ -18,7 +20,7 @@ public record HabitacionRequest(
 	    @NotNull(message = "El precio es obligatorio")
 	    @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
 	    @Digits(integer = 10, fraction = 2, message = "El precio debe tener máximo 10 dígitos enteros y 2 decimales")
-	    Double precio,
+	    BigDecimal precio,
 
 	    @NotNull(message = "La capacidad es obligatoria")
 	    @Min(value = 1, message = "La capacidad mínima es 1")
