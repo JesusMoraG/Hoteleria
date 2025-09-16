@@ -1,5 +1,7 @@
 package com.tcg.habitaciones.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,9 +40,9 @@ public class Habitacion {
 
     @NotNull
     @DecimalMin(value = "0.01", inclusive = true)
-    @Digits(integer = 10, fraction = 2)
-    @Column(nullable = false, precision = 10, scale = 2)
-    private Double precio;
+    @Column(nullable = false)
+    private BigDecimal  precio;
+
 
     @NotNull
     @Min(1)
@@ -84,11 +86,11 @@ public class Habitacion {
 		this.descripcion = descripcion;
 	}
 
-	public Double getPrecio() {
+	public BigDecimal  getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(Double precio) {
+	public void setPrecio(BigDecimal  precio) {
 		this.precio = precio;
 	}
 

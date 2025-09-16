@@ -1,14 +1,14 @@
 package com.tcg.habitaciones.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import com.tcg.commons.controller.CommonController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 import com.tcg.commons.dto.HabitacionRequest;
 import com.tcg.commons.dto.HabitacionResponse;
 import com.tcg.habitaciones.service.HabitacionService;
 
 @RestController
-public class HabitacionController extends CommonController<HabitacionRequest, HabitacionResponse, HabitacionService> {
+@RequestMapping("/api/habitaciones")
+public class HabitacionController {
 
     private final HabitacionService service;
 
@@ -16,10 +16,28 @@ public class HabitacionController extends CommonController<HabitacionRequest, Ha
         this.service = service;
     }
 
-    @Override
-    protected HabitacionService getService() {
-        return service;
+    @GetMapping
+    public List<HabitacionResponse> listar() {
+        return service.listarTodos();
     }
-	
 
+    @GetMapping("/{id}")
+    public HabitacionResponse obtener(@PathVariable Long id) {
+        return service.obtenerPorId(id);
+    }
+
+    @PostMapping
+    public HabitacionResponse insertar(@RequestBody HabitacionRequest request) {
+        return service.insertar(request);
+    }
+
+    @PutMapping("/{id}")
+    public HabitacionResponse actualizar(@PathVariable Long id, @RequestBody HabitacionRequest request) {
+        return service.actualizar(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable Long id) {
+        service.eliminar(id);
+    }
 }
