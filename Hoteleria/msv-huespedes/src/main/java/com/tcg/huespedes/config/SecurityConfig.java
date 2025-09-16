@@ -20,8 +20,8 @@ public class SecurityConfig {
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable());
     http.authorizeHttpRequests(auth -> auth
-        .requestMatchers("/actuator/**").permitAll()
-        .anyRequest().authenticated());
+    	    .requestMatchers("/actuator/**", "/ping").permitAll()
+    	    .anyRequest().authenticated());
     http.oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter())));
     return http.build();
   }
