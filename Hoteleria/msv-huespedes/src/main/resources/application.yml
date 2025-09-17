@@ -1,38 +1,30 @@
 server:
-  port: 0
+  port: 8082
 
 spring:
   application:
     name: msv-huespedes
-
   datasource:
-    url: jdbc:oracle:thin:@//localhost:1521/orclpdb 
-    username: ADMIN
-    password: admin
-    driver-class-name: oracle.jdbc.OracleDriver
-
+    url: jdbc:h2:mem:huespedesdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
   jpa:
     hibernate:
-      ddl-auto: none
-    open-in-view: false
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.OracleDialect
         format_sql: true
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:9000/oauth2/jwks
+  profiles:
+    active: dev
 
 eureka:
   client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
   instance:
     prefer-ip-address: true
 
@@ -41,3 +33,18 @@ management:
     web:
       exposure:
         include: health,info
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:oracle:thin:@//HOST:PORT/SERVICE
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: YOUR_USER
+    password: YOUR_PASS
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: none

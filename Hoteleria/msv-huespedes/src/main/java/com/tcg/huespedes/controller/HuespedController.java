@@ -1,23 +1,19 @@
 package com.tcg.huespedes.controller;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Optional;
-
+import com.tcg.huespedes.dto.HuespedRequest;
+import com.tcg.huespedes.dto.HuespedResponse;
+import com.tcg.huespedes.service.HuespedService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.tcg.huespedes.models.Huesped;
-import com.tcg.huespedes.service.HuespedService;
-
-import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.List;
 
 @RestController
-@RequestMapping
-@Validated
+@RequestMapping("/api/huespedes")
 public class HuespedController {
+
 
     private final HuespedService service;
 
@@ -25,37 +21,41 @@ public class HuespedController {
         this.service = service;
     }
 
-    @GetMapping("/")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<List<Huesped>> listar() {
-        return ResponseEntity.ok(service.listar());
+    @GetMapping
+    public List<HuespedResponse> findAll() {
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<Huesped> ver(@PathVariable Long id) {
-        Optional<Huesped> h = service.buscarPorId(id);
-        return h.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<HuespedResponse> findById(@PathVariable Long id) {
+        return service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<Huesped> crear(@Valid @RequestBody Huesped h) {
-        Huesped creado = service.crear(h);
-        return ResponseEntity.created(URI.create("/" + creado.getId())).body(creado);
+    @GetMapping("/search")
+    public ResponseEntity<HuespedResponse> findByEmail(@RequestParam String email) {
+        return service.findByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<HuespedResponse> create(@Valid @RequestBody HuespedRequest request) {
+        HuespedResponse created = service.create(request);
+        return ResponseEntity.created(URI.create("/api/huespedes/" + created.id())).body(created);
+
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Huesped> actualizar(@PathVariable Long id, @Valid @RequestBody Huesped h) {
-        Huesped actualizado = service.actualizar(id, h);
-        return ResponseEntity.ok(actualizado);
+    public ResponseEntity<HuespedResponse> update(@PathVariable Long id,
+                                                  @Valid @RequestBody HuespedRequest request) {
+        return ResponseEntity.ok(service.update(id, request));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
