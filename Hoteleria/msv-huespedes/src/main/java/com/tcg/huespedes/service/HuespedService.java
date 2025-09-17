@@ -1,12 +1,8 @@
 package com.tcg.huespedes.service;
 
-import com.tcg.huespedes.dto.HuespedDto;
-import java.util.List;
+import com.tcg.commons.dto.HuespedRequest;
+import com.tcg.commons.dto.HuespedResponse;
+import com.tcg.commons.service.CommonService;
 
-public interface HuespedService {
-    List<HuespedDto> findAll();
-    HuespedDto findById(Long id);
-    HuespedDto create(HuespedDto dto);
-    HuespedDto update(Long id, HuespedDto dto);
-    void delete(Long id);
+public interface HuespedService extends CommonService<HuespedRequest, HuespedResponse> {
 }
