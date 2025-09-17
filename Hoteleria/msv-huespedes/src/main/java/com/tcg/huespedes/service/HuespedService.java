@@ -1,13 +1,16 @@
 package com.tcg.huespedes.service;
 
+import com.tcg.huespedes.dto.HuespedRequest;
+import com.tcg.huespedes.dto.HuespedResponse;
+
 import java.util.List;
 import java.util.Optional;
-import com.tcg.huespedes.models.Huesped;
 
 public interface HuespedService {
-    Huesped crear(Huesped h);
-    List<Huesped> listar();
-    Optional<Huesped> buscarPorId(Long id);
-    Huesped actualizar(Long id, Huesped h);
-    void eliminar(Long id);
+    List<HuespedResponse> findAll();
+    Optional<HuespedResponse> findById(Long id);
+    Optional<HuespedResponse> findByEmail(String email);
+    HuespedResponse create(HuespedRequest request);
+    HuespedResponse update(Long id, HuespedRequest request);
+    void delete(Long id);
 }

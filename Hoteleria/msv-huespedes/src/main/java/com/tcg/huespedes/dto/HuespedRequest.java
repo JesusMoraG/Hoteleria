@@ -17,27 +17,28 @@ public class HuespedRequest {
     private String email;
 
     @NotBlank
-    @Pattern(regexp = "\\d{10}")
+    @Pattern(regexp = "^[0-9]{10}$", message = "El teléfono debe tener 10 dígitos")
     private String telefono;
 
-    @NotBlank
-    @Size(max = 20)
     private String documento;
-
-    @NotBlank
-    @Size(max = 50)
     private String nacionalidad;
 
+    // Getters y setters
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
+
     public String getApellido() { return apellido; }
     public void setApellido(String apellido) { this.apellido = apellido; }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+
     public String getDocumento() { return documento; }
     public void setDocumento(String documento) { this.documento = documento; }
+
     public String getNacionalidad() { return nacionalidad; }
     public void setNacionalidad(String nacionalidad) { this.nacionalidad = nacionalidad; }
 }
