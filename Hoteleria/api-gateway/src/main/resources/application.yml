@@ -27,12 +27,19 @@ spring:
             - Path=/api/habitaciones/** #esta es la ruta a la cual accedera
            filters:
             - StripPrefix=2
-         - id: msv-habitaciones #aqui va el nombre del msv
-           uri: lb://msv-habitaciones #aqui va el nombre del msv
+         - id: msv-huespedes #aqui va el nombre del msv
+           uri: lb://msv-huespedes #aqui va el nombre del msv
            predicates: 
-            - Path=/api/habitaciones/** #esta es la ruta a la cual accedera
+            - Path=/api/huespedes/** #esta es la ruta a la cual accedera
            filters:
             - StripPrefix=2
+         - id: msv-reservas #aqui va el nombre del msv
+           uri: lb://msv-reservas #aqui va el nombre del msv
+           predicates: 
+            - Path=/api/reservas/** #esta es la ruta a la cual accedera
+           filters:
+            - StripPrefix=2
+
 server:
  port: 8090
 

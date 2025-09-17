@@ -5,14 +5,14 @@ import java.time.LocalDate;
 
 public record ReservaRequest(
     @NotNull(message = "Debe indicar un huésped")
-    Long idHuesped,
+    Long huespedId,
 
     @NotNull(message = "Debe indicar una habitación")
-    Long idHabitacion,
+    Long habitacionId,
 
     @NotNull(message = "La fecha de inicio es obligatoria")
-    LocalDate fechaInicio,
+    LocalDate fechaEntrada,
 
     @NotNull(message = "La fecha de fin es obligatoria")
-    LocalDate fechaFin
+    LocalDate fechaSalida
 ) {}
