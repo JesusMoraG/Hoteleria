@@ -59,6 +59,13 @@ public class RolServiceImpl implements RolService {
     }
 
     @Override
+    public RolResponse buscarPorNombre(String nombre) {
+        Rol rol = repository.findByNombreIgnoreCase(nombre)
+                .orElseThrow(() -> new ResourceNotFoundException("Rol no encontrado con nombre: " + nombre));
+        return mapper.entityToResponse(rol);
+    }
+    
+    @Override
     public void eliminar(Long id) {
         Rol existing = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rol no encontrado con id: " + id));

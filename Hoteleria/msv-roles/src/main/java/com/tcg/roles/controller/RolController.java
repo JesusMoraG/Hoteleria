@@ -1,5 +1,7 @@
 package com.tcg.roles.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcg.commons.controller.CommonController;
@@ -20,4 +22,10 @@ public class RolController extends CommonController<RolRequest, RolResponse, Rol
     protected RolService getService() {
         return service;
     }
+    
+ 
+    public ResponseEntity<RolResponse> buscarPorNombre(@PathVariable String nombre) {
+        return ResponseEntity.ok(service.buscarPorNombre(nombre));
+    }
+
 }
