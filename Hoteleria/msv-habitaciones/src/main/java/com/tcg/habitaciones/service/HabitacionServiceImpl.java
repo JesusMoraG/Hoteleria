@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.tcg.commons.dto.HabitacionRequest;
 import com.tcg.commons.dto.HabitacionResponse;
+import com.tcg.commons.dto.RolResponse;
 import com.tcg.habitaciones.mapper.HabitacionMapper;
 import com.tcg.habitaciones.model.Habitacion;
 import com.tcg.habitaciones.repository.HabitacionRepository;
@@ -24,7 +25,8 @@ public class HabitacionServiceImpl implements HabitacionService {
 
     @Override
     public List<HabitacionResponse> listarTodos() {
-        return repository.findAll().stream()
+        return repository.findAll()
+                .stream()
                 .map(mapper::entityToResponse)
                 .collect(Collectors.toList());
     }
