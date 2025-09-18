@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import com.tcg.commons.enums.EstadoHabitacion;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 
 public record HabitacionRequest(
@@ -29,7 +31,7 @@ public record HabitacionRequest(
 	    Integer capacidad,
 
 	    @NotNull(message = "El estado es obligatorio")
-	    @Pattern(regexp = "DISPONIBLE|OCUPADA|LIMPIEZA|MANTENIMIENTO", message = "Estado inválido")
+	    @Enumerated(EnumType.STRING)
 	    EstadoHabitacion estado
 	    
 
