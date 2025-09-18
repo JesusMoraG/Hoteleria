@@ -1,18 +1,15 @@
 package com.tcg.huespedes.service;
 
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tcg.commons.dto.HuespedRequest;
 import com.tcg.commons.dto.HuespedResponse;
 import com.tcg.commons.exceptions.ResourceNotFoundException;
 import com.tcg.huespedes.mapper.HuespedMapper;
 import com.tcg.huespedes.model.Huesped;
 import com.tcg.huespedes.repository.HuespedRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,31 +25,27 @@ public class HuespedServiceImpl implements HuespedService {
 
     @Override
     public List<HuespedResponse> listarTodos() {
-        return repository.findAll().stream()
+        return repository.findAll()
+                .stream()
                 .map(mapper::entityToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public HuespedResponse obtenerPorId(Long id) {
-        Huesped h = repository.findById(id)
+        Huesped huesped = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Huésped no encontrado con id: " + id));
-        return mapper.entityToResponse(h);
+        return mapper.entityToResponse(huesped);
     }
 
     @Override
     public HuespedResponse insertar(HuespedRequest dto) {
-        if (repository.existsByDocumento(dto.documento())) {
-            throw new IllegalArgumentException("El documento ya está registrado");
+        if (repository.existsByNumeroDocumento(dto.numeroDocumento())) {
+            throw new IllegalArgumentException("El número de documento ya existe");
         }
-        if (repository.existsByEmail(dto.email())) {
-            throw new IllegalArgumentException("El email ya está registrado");
-        }
-
         Huesped entity = mapper.requestToEntity(dto);
         return mapper.entityToResponse(repository.save(entity));
     }
-
 
     @Override
     public HuespedResponse actualizar(Long id, HuespedRequest dto) {
@@ -61,10 +54,10 @@ public class HuespedServiceImpl implements HuespedService {
 
         existing.setNombre(dto.nombre().trim());
         existing.setApellido(dto.apellido().trim());
-        existing.setDocumento(dto.documento().trim());
-        existing.setEmail(dto.email().trim());
-        existing.setTelefono(dto.telefono().trim());
-        existing.setNacionalidad(dto.nacionalidad().trim());
+        existing.setNumeroDocumento(dto.numeroDocumento().trim());
+        existing.setTipoDocumento(dto.tipoDocumento());
+        existing.setTelefono(dto.telefono() != null ? dto.telefono().trim() : null);
+        existing.setEmail(dto.email() != null ? dto.email().trim() : null);
 
         return mapper.entityToResponse(repository.save(existing));
     }

@@ -68,9 +68,9 @@
 
     <!-- Commons compartido -->
     <dependency>
-      <groupId>com.tcg</groupId>
-      <artifactId>commons</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+    	<groupId>com.tcg</groupId>
+      	<artifactId>commons</artifactId>
+      	<version>0.0.1-SNAPSHOT</version>
     </dependency>
 
     <!-- Actuator (health/info) -->

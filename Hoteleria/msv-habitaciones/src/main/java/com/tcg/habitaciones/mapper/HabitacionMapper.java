@@ -1,6 +1,5 @@
 package com.tcg.habitaciones.mapper;
 
-
 import org.springframework.stereotype.Component;
 
 import com.tcg.commons.dto.HabitacionRequest;
@@ -19,20 +18,20 @@ public class HabitacionMapper extends CommonMapper<HabitacionRequest, Habitacion
         habitacion.setDescripcion(request.descripcion().trim());
         habitacion.setPrecio(request.precio());
         habitacion.setCapacidad(request.capacidad());
-        habitacion.setEstado(request.estado().trim());
+        habitacion.setEstado(request.estado()); // Enum directamente
         return habitacion;
     }
 
     @Override
     public HabitacionResponse entityToResponse(Habitacion entity) {
         return new HabitacionResponse(
-        		 	entity.getId(),
-        	        entity.getNumero(),
-        	        entity.getTipo(),
-        	        entity.getDescripcion(),
-        	        entity.getPrecio(),
-        	        entity.getCapacidad(),
-        	        entity.getEstado()
+            entity.getId(),
+            entity.getNumero(),
+            entity.getTipo(),
+            entity.getDescripcion(),
+            entity.getPrecio(),
+            entity.getCapacidad(),
+            entity.getEstado()
         );
     }
 }

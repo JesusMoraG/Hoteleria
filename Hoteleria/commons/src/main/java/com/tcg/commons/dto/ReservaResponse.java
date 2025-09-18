@@ -1,15 +1,13 @@
 package com.tcg.commons.dto;
 
-import java.math.BigDecimal;
+import com.tcg.commons.enums.EstadoReserva;
 import java.time.LocalDate;
 
 public record ReservaResponse(
-        Long id,
-        Long huespedId,
-        Long habitacionId,
-        LocalDate fechaEntrada,
-        LocalDate fechaSalida,
-        Integer noches,
-        BigDecimal total,
-        String estado
+    Long id,
+    Long huespedId,
+    Long habitacionId,
+    LocalDate fechaEntrada,
+    LocalDate fechaSalida,
+    EstadoReserva estado
 ) {}

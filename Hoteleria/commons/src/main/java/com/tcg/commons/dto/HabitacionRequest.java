@@ -2,6 +2,8 @@ package com.tcg.commons.dto;
 
 import java.math.BigDecimal;
 
+import com.tcg.commons.enums.EstadoHabitacion;
+
 import jakarta.validation.constraints.*;
 
 public record HabitacionRequest(
@@ -28,6 +30,7 @@ public record HabitacionRequest(
 
 	    @NotBlank(message = "El estado es obligatorio")
 	    @Pattern(regexp = "Disponible|Ocupada|Limpieza|Mantenimiento", message = "Estado inválido")
-	    String estado
+	    EstadoHabitacion estado
+	    
 
 	) {}

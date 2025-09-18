@@ -1,6 +1,8 @@
 package com.tcg.commons.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tcg.commons.enums.EstadoReserva;
+
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,7 +36,7 @@ public record ReservaRequest(
 
    
     @Pattern(regexp = "^[A-Za-z0-9 _\\-]{1,50}$", message = "Estado inválido")
-    String estado
+    EstadoReserva estado
 
 ) {
 

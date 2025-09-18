@@ -1,38 +1,35 @@
 package com.tcg.huespedes.mapper;
 
-
-import org.springframework.stereotype.Component;
-
 import com.tcg.commons.dto.HuespedRequest;
 import com.tcg.commons.dto.HuespedResponse;
-import com.tcg.commons.mapper.CommonMapper;
 import com.tcg.huespedes.model.Huesped;
+import org.springframework.stereotype.Component;
 
 @Component
-public class HuespedMapper extends CommonMapper<HuespedRequest, HuespedResponse, Huesped> {
+public class HuespedMapper {
 
-    @Override
-    public Huesped requestToEntity(HuespedRequest request) {
-        Huesped huesped = new Huesped();
-        huesped.setNombre(request.nombre().trim());
-        huesped.setApellido(request.apellido().trim());
-        huesped.setDocumento(request.documento().trim());
-        huesped.setEmail(request.email().trim());
-        huesped.setTelefono(request.telefono().trim());
-        huesped.setNacionalidad(request.nacionalidad().trim());
-        return huesped;
-    }
-
-    @Override
     public HuespedResponse entityToResponse(Huesped entity) {
         return new HuespedResponse(
-            entity.getId(),
-            entity.getNombre(),
-            entity.getApellido(),
-            entity.getDocumento(),
-            entity.getEmail(),
-            entity.getTelefono(),
-            entity.getNacionalidad()
+                entity.getId(),
+                entity.getNombre(),
+                entity.getApellido(),
+                entity.getNumeroDocumento(),
+                entity.getTipoDocumento(),
+                entity.getTelefono(),
+                entity.getEmail(),
+                entity.getNacionalidad()
         );
+    }
+
+    public Huesped requestToEntity(HuespedRequest request) {
+        Huesped huesped = new Huesped();
+        huesped.setNombre(request.nombre() != null ? request.nombre().trim() : null);
+        huesped.setApellido(request.apellido() != null ? request.apellido().trim() : null);
+        huesped.setNumeroDocumento(request.numeroDocumento() != null ? request.numeroDocumento().trim() : null);
+        huesped.setTipoDocumento(request.tipoDocumento());
+        huesped.setTelefono(request.telefono() != null ? request.telefono().trim() : null);
+        huesped.setEmail(request.email() != null ? request.email().trim() : null);
+        huesped.setNacionalidad(request.nacionalidad() != null ? request.nacionalidad().trim() : null); // agregado
+        return huesped;
     }
 }

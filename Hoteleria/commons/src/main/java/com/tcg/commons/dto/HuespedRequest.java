@@ -1,5 +1,7 @@
 package com.tcg.commons.dto;
 
+import com.tcg.commons.enums.TipoDocumento;
+
 import jakarta.validation.constraints.*;
 
 public record HuespedRequest(
@@ -10,7 +12,10 @@ public record HuespedRequest(
     String apellido,
 
     @NotBlank(message = "El documento es obligatorio")
-    String documento,
+    TipoDocumento tipoDocumento,
+    
+    @NotBlank(message = "El numero de documento es obligatorio")
+    String numeroDocumento,
     
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "El formato del email no es válido")

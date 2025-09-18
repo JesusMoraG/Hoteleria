@@ -3,6 +3,8 @@ package com.tcg.habitaciones.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
+import com.tcg.commons.enums.EstadoHabitacion;
+
 @Entity
 @Table(name = "HABITACIONES")
 public class Habitacion {
@@ -27,8 +29,10 @@ public class Habitacion {
     @Column(nullable = false)
     private Integer capacidad;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String estado;
+    private EstadoHabitacion estado;
+
 
     // Getters y setters
     public Long getId() {
@@ -79,11 +83,13 @@ public class Habitacion {
         this.capacidad = capacidad;
     }
 
-    public String getEstado() {
-        return estado;
-    }
+	public EstadoHabitacion getEstado() {
+		return estado;
+	}
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+	public void setEstado(EstadoHabitacion estado) {
+		this.estado = estado;
+	}
+
+  
 }
