@@ -18,7 +18,7 @@ public class HabitacionMapper extends CommonMapper<HabitacionRequest, Habitacion
         habitacion.setDescripcion(request.descripcion().trim());
         habitacion.setPrecio(request.precio());
         habitacion.setCapacidad(request.capacidad());
-        habitacion.setEstado(request.estado()); // Enum directamente
+        habitacion.setEstado(request.estado()); 
         return habitacion;
     }
 

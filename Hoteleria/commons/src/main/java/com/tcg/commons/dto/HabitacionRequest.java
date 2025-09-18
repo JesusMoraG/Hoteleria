@@ -28,8 +28,8 @@ public record HabitacionRequest(
 	    @Min(value = 1, message = "La capacidad mínima es 1")
 	    Integer capacidad,
 
-	    @NotBlank(message = "El estado es obligatorio")
-	    @Pattern(regexp = "Disponible|Ocupada|Limpieza|Mantenimiento", message = "Estado inválido")
+	    @NotNull(message = "El estado es obligatorio")
+	    @Pattern(regexp = "DISPONIBLE|OCUPADA|LIMPIEZA|MANTENIMIENTO", message = "Estado inválido")
 	    EstadoHabitacion estado
 	    
 
