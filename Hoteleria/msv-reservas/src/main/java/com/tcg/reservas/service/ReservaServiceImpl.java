@@ -87,9 +87,9 @@ public class ReservaServiceImpl implements ReservaService {
 
         return new ReservaResponse(
                 reserva.getId(),
-                huesped.nombre(),
-                huesped.apellido(),
-                reserva.getFechaEntrada(),
+                reserva.getHuespedId(),
+                reserva.getHabitacionId(),
+               reserva.getFechaEntrada(),
                 reserva.getFechaSalida(),
                 noches,
                 total,
