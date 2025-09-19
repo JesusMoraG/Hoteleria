@@ -1,5 +1,9 @@
 package com.tcg.reservas.service;
 
+import com.tcg.commons.clients.HabitacionClient;
+import com.tcg.commons.clients.HuespedClient;
+import com.tcg.commons.dto.HabitacionResponse;
+import com.tcg.commons.dto.HuespedResponse;
 import com.tcg.commons.dto.ReservaRequest;
 import com.tcg.commons.dto.ReservaResponse;
 import com.tcg.commons.exceptions.ResourceNotFoundException;
@@ -9,19 +13,28 @@ import com.tcg.reservas.repository.ReservaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
 @Transactional
 public class ReservaServiceImpl implements ReservaService {
 
-    private final ReservaRepository repository;
+	private final ReservaRepository repository;
     private final ReservaMapper mapper;
+    private final HuespedClient huespedClient;
+    private final HabitacionClient habitacionClient;
 
-    public ReservaServiceImpl(ReservaRepository repository, ReservaMapper mapper) {
+    public ReservaServiceImpl(ReservaRepository repository,
+                              ReservaMapper mapper,
+                              HuespedClient huespedClient,
+                              HabitacionClient habitacionClient) {
         this.repository = repository;
         this.mapper = mapper;
-    }
+        this.huespedClient = huespedClient;
+        this.habitacionClient = habitacionClient;
+}
 
     @Override
     public List<ReservaResponse> listarTodos() {
@@ -63,5 +76,24 @@ public class ReservaServiceImpl implements ReservaService {
         Reserva existing = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con id: " + id));
         repository.delete(existing);
+    }
+    
+    private ReservaResponse convertirAResponse(Reserva reserva) {
+        HuespedResponse huesped = huespedClient.obtenerPorId(reserva.getHuespedId());
+        HabitacionResponse habitacion = habitacionClient.obtenerPorId(reserva.getHabitacionId());
+
+        int noches = (int) ChronoUnit.DAYS.between(reserva.getFechaEntrada(), reserva.getFechaSalida());
+        BigDecimal total = habitacion.precio().multiply(BigDecimal.valueOf(noches));
+
+        return new ReservaResponse(
+                reserva.getId(),
+                huesped.nombre(),
+                huesped.apellido(),
+                reserva.getFechaEntrada(),
+                reserva.getFechaSalida(),
+                noches,
+                total,
+                reserva.getEstado()
+        );
     }
 }

@@ -6,12 +6,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record ReservaResponse(
-    Long id,
-    Long huespedId,
-    Long habitacionId,
-    LocalDate fechaEntrada,
-    LocalDate fechaSalida,
-    int noches,
-    BigDecimal total,
-    EstadoReserva estado
+		 Long id,
+		    String huespedNombre,
+		    String huespedApellido,
+		    LocalDate fechaEntrada,
+		    LocalDate fechaSalida,
+		    int noches,
+		    BigDecimal total,
+		    EstadoReserva estado
 ) {}
