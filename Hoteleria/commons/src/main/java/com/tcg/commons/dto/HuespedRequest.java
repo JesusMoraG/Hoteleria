@@ -2,6 +2,8 @@ package com.tcg.commons.dto;
 
 import com.tcg.commons.enums.TipoDocumento;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 
 public record HuespedRequest(
@@ -11,7 +13,8 @@ public record HuespedRequest(
     @NotBlank(message = "El apellido es obligatorio")
     String apellido,
 
-    @NotBlank(message = "El documento es obligatorio")
+    @NotNull(message = "El documento es obligatorio")
+    @Enumerated(EnumType.STRING)
     TipoDocumento tipoDocumento,
     
     @NotBlank(message = "El numero de documento es obligatorio")

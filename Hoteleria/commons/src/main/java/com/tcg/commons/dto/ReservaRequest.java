@@ -3,6 +3,8 @@ package com.tcg.commons.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tcg.commons.enums.EstadoReserva;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,8 +36,8 @@ public record ReservaRequest(
     @DecimalMin(value = "0.00", inclusive = true, message = "El total no puede ser negativo")
     BigDecimal total,
 
-   
-    @Pattern(regexp = "^[A-Za-z0-9 _\\-]{1,50}$", message = "Estado inválido")
+    @NotNull(message = "El estado es obligatorio")
+    @Enumerated(EnumType.STRING)
     EstadoReserva estado
 
 ) {
