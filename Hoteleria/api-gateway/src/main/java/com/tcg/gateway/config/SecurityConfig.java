@@ -25,12 +25,22 @@ public class SecurityConfig {
 			configuration.setAllowCredentials(true);
 			return configuration;
 		})).authorizeExchange(exchange-> exchange
-				.anyExchange().permitAll())
+				
+		.pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+		
+		.pathMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN","USER")
+		.pathMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN","USER")
+		.pathMatchers(HttpMethod.PUT, "/**").hasRole("USER")
+		.pathMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+		.anyExchange().authenticated())
+				.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt->
+				jwt.jwtAuthenticationConverter(reactiveJwtAuthenticationConverterAdapter())
+				))
 		);
 		return http.build();
 	}
 	
-	/*@Bean
+	@Bean
 	ReactiveJwtAuthenticationConverterAdapter reactiveJwtAuthenticationConverterAdapter() {
 	JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter= new JwtGrantedAuthoritiesConverter();
 	grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
@@ -38,5 +48,5 @@ public class SecurityConfig {
 	JwtAuthenticationConverter jwtAuthenticationConverter=new JwtAuthenticationConverter();
 	jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
 	return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
-	}*/
+	}
 }
