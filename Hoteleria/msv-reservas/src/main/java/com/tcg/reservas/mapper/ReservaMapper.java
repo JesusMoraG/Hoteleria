@@ -29,6 +29,8 @@ public class ReservaMapper extends CommonMapper<ReservaRequest, ReservaResponse,
     		    entity.getHabitacionId(),
     		    entity.getFechaEntrada(),
     		    entity.getFechaSalida(),
+    		    entity.getNoches(),
+    		    entity.getTotal(),
     		    entity.getEstado()
     		);
     }

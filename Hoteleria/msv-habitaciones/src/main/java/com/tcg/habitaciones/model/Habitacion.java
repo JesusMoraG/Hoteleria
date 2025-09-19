@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 import com.tcg.commons.enums.EstadoHabitacion;
-import com.tcg.commons.enums.EstadoReserva;
 
 @Entity
 @Table(name = "HABITACIONES")
@@ -31,8 +30,8 @@ public class Habitacion {
     private Integer capacidad;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ESTADO", nullable = false)
-    private EstadoReserva estado;
+    @Column(nullable = false, length = 20)
+    private EstadoHabitacion estado;
 
 
     // Getters y setters
@@ -84,14 +83,13 @@ public class Habitacion {
         this.capacidad = capacidad;
     }
 
-	public EstadoReserva getEstado() {
+	public EstadoHabitacion getEstado() {
 		return estado;
 	}
 
-	public void setEstado(EstadoReserva estado) {
+	public void setEstado(EstadoHabitacion estado) {
 		this.estado = estado;
 	}
 
-	
   
 }
