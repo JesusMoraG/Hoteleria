@@ -17,32 +17,41 @@ public class SecurityConfig {
 	
 	@Bean
 	SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		http.csrf(csrf-> csrf.disable().cors(cors->cors.configurationSource(request->{
-			CorsConfiguration configuration=new CorsConfiguration();
-			configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-			configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
-			configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
-			configuration.setAllowCredentials(true);
-			return configuration;
-		})).authorizeExchange(exchange-> exchange
-				
-		.pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-		
-		.pathMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN","USER")
-		.pathMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN","USER")
-		.pathMatchers(HttpMethod.PUT, "/**").hasRole("USER")
-		.pathMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-		.anyExchange().authenticated()));
+		http.csrf(csrf -> csrf.disable())
+				// .cors(Customizer.withDefaults())
+				.cors(cors -> cors.configurationSource(request -> {
+					CorsConfiguration config = new CorsConfiguration();
+					config.setAllowedOrigins(List.of("http://localhost:4200"));
+					config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+					config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+					config.setAllowCredentials(true);
+					return config;
+				})).authorizeExchange(exchange -> exchange
+					// Permitir todas las peticiones OPTIONS (preflight CORS)
+					.pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+					// Restricciones por método
+					.pathMatchers(HttpMethod.GET, "/**").hasAnyRole("ADMIN", "USER")
+					.pathMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "USER")
+					.pathMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
+					.pathMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+					.anyExchange().authenticated())
+					.oauth2ResourceServer(oauth2 -> oauth2
+							.jwt(jwt -> jwt.jwtAuthenticationConverter(reactiveJwtAuthenticationConverter()
+					)));
+
 		return http.build();
 	}
 	
 	@Bean
-	ReactiveJwtAuthenticationConverterAdapter reactiveJwtAuthenticationConverterAdapter() {
-	JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter= new JwtGrantedAuthoritiesConverter();
-	grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
-	grantedAuthoritiesConverter.setAuthorityPrefix("");
-	JwtAuthenticationConverter jwtAuthenticationConverter=new JwtAuthenticationConverter();
-	jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-	return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
-	}
+    ReactiveJwtAuthenticationConverterAdapter reactiveJwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        authoritiesConverter.setAuthoritiesClaimName("roles");
+        authoritiesConverter.setAuthorityPrefix("");
+
+        JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
+        jwtConverter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
+
+        return new ReactiveJwtAuthenticationConverterAdapter(jwtConverter);
+    }
 }

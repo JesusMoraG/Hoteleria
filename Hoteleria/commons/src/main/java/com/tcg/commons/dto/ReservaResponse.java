@@ -6,9 +6,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record ReservaResponse(
-		 Long id,
+		 	Long id,
+		 	Long huespedId,
 		    String huespedNombre,
 		    String huespedApellido,
+		    Long habitacionId,
 		    LocalDate fechaEntrada,
 		    LocalDate fechaSalida,
 		    int noches,
